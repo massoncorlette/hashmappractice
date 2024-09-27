@@ -4,6 +4,7 @@ const hashMap = function() {
 
   let hashTable = [];
   let currentCapacity = 16;
+  let loadFactor = parseInt(currentCapacity * 0.8);
   hashTable.length = currentCapacity;
 
   function hash(key) {
@@ -19,7 +20,7 @@ const hashMap = function() {
 
   function set(key, value) {
     const hashCode = hash(key) % currentCapacity;
-    console.log(hashCode);
+    hashTable[hashCode] = value;
 
   }
 
@@ -70,6 +71,4 @@ const hashMap = function() {
 }
 
 const test = hashMap();
-
-test.set('frog');
-test.set('apple');
+test.set("Jimmy", "Mcnnulty");
