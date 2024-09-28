@@ -1,4 +1,15 @@
 
+function nodeObj(value, nextNode) {
+  if (!(value)) {
+    value = null;
+  } else if (!(nextNode)) {
+    nextNode = null;
+  }
+  this.value = value;
+  this.nextNode = nextNode;
+
+}
+
 
 const hashMap = function() {
 
@@ -20,8 +31,21 @@ const hashMap = function() {
 
   function set(key, value) {
     const hashCode = hash(key) % currentCapacity;
-    hashTable[hashCode] = value;
+    let newNode = new nodeObj(value);
 
+    if (hashTable[hashCode]) {
+      let currentNode = hashTable[hashCode];
+      
+      while(currentNode.nextNode !== null) {
+        currentNode = currentNode.nextNode;
+      }
+      currentNode.nextNode = newNode;
+      console.log(hashTable);
+
+    } else {
+      hashTable[hashCode] = newNode;
+      console.log(hashTable);
+    }
   }
 
   function get(key) {
@@ -72,3 +96,5 @@ const hashMap = function() {
 
 const test = hashMap();
 test.set("Jimmy", "Mcnnulty");
+test.set("Jimmy", "Mcnnluty");
+
