@@ -14,6 +14,8 @@ function nodeObj(value, nextNode) {
 const hashMap = function() {
 
   let hashTable = [];
+  let keyArray = [];
+  let valueArray = [];
   let currentCapacity = 16;
   let loadFactor = parseInt(currentCapacity * 0.8);
   hashTable.length = currentCapacity;
@@ -26,7 +28,7 @@ const hashMap = function() {
       hashCode = primeNumber * hashCode + key.charCodeAt(i);
     }
  
-    return hashCode;
+    return hashCode % currentCapacity;
   }
 
   function set(key, value) {
@@ -40,45 +42,103 @@ const hashMap = function() {
         currentNode = currentNode.nextNode;
       }
       currentNode.nextNode = newNode;
-      console.log(hashTable);
 
     } else {
       hashTable[hashCode] = newNode;
-      console.log(hashTable);
+      keyArray.push(key);
     }
+    console.log(hashTable);
   }
 
   function get(key) {
 
+    let hashKey = hash(key);
+
+    if (!(hashTable[hashKey])) {
+      return null;
+    } else {
+      return hashTable[hashKey].value;
+    }
   }
 
   function has(key) {
+
+    let getStatus = get(key);
+
+    if (getStatus === null) {
+      return false
+    } else {
+      return true;
+    }
 
   }
 
   function remove(key) {
 
+    let getStatus = has(key);
+
+    if (getStatus === false) {
+      return false;
+    } else {
+      let getNode = get(key);
+      let hashKey = hash(key);
+    
+      hashTable[hashKey] = null;
+
+      for (let i=0;i<keyArray.length;i++) {
+        if (keyArray[i] === key) {
+          keyArray[i] = null;
+        }
+      }
+      return true;
+    }
+
   }
 
   function length() {
 
+    let counter = 0;
+
+    for (let i=0;i<hashTable.length;i++) {
+      if (hashTable[i]) {
+        counter += 1;
+      }
+    }
+    return counter;
   }
 
   function clear() {
-
+    
+    for (let i=0;i<hashTable.length;i++) {
+      hashTable[i] = null;
+    }
   }
 
   function keys() {
 
+    console.log(keyArray);
+    return keyArray;
   }
 
   function values() {
 
+
+    for (let i=0;i<hashTable.length;i++) {
+      let currentNode = hashTable[i];
+
+      if (hashTable[i]) {
+        valueArray.push(hashTable[i].value)
+
+        while (currentNode.nextNode !== null) {
+          currentNode = currentNode.nextNode;
+          valueArray.push(currentNode.value);
+        }
+      }
+    }
+    console.log(valueArray);
+    return valueArray;
   }
 
-  function entries() {
-
-  }
 
   return {
     set:set,
@@ -95,6 +155,14 @@ const hashMap = function() {
 }
 
 const test = hashMap();
-test.set("Jimmy", "Mcnnulty");
-test.set("Jimmy", "Mcnnluty");
+
+test.set("Joe", "Little");
+test.set("Rick", "Harden");
+test.set("Alex", "Jones");
+test.set("Joe", "Dirt");
+test.keys();
+test.values();
+
+
+
 
